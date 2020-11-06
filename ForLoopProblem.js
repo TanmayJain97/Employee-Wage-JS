@@ -69,7 +69,7 @@ getFactorial(5);
 getFactorial(9);
 getFactorial(14);
 
-//
+//Prime Factors Of A Number
 function getPrimeFactors(num) {
     for (var i = 2; i <= num; i++) {
         while (num % i == 0) {
