@@ -55,6 +55,23 @@ getPrimeFactors(9);
 getPrimeFactors(14);
 
 //Write a Program to show Sum of three Integer adds to ZERO
+let intArray=[1,2,-5,4,3,-3];
+let triplet=new Array();
+let output=new Array();
+for(var x=0;x<intArray.length;x++){
+    for(var y=x;y<intArray.length;y++){
+        for(var z=y;z<intArray.length;z++){
+            if(x+y+z==0){
+                triplet.push(x,y,z);
+                output.push(triplet);
+                triplet = [];
+            }
+        }
+
+    }
+}
+console.log("The triplets are: ");
+console.log(output);
 
 //Digits Repeated Twice in 0-100
 function checkPalindrome(num){
