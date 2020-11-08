@@ -26,6 +26,11 @@ let totalEmpHrs = 0;
 let totalWorkingDays = 0;
 let empDailyWageArray = new Array();
 let empDailyWageMap = new Map();
+let empDailyHrsMap = new Map();
+
+//Refactored for UC 10
+let empObjArray = new Array();
+console.log("UC 10");
 
 while((totalEmpHrs<=MAX_HRS_IN_MONTH) && 
         (totalWorkingDays<NUM_OF_WORKING_DAYS)){
@@ -35,7 +40,22 @@ while((totalEmpHrs<=MAX_HRS_IN_MONTH) &&
     totalEmpHrs = totalEmpHrs + empHrs;
     empDailyWageArray.push(calcDailyWage(empHrs));
     empDailyWageMap.set(totalWorkingDays,calcDailyWage(empHrs));
+    empDailyHrsMap.set(totalWorkingDays,empHrs);
+
+    empObjArray.push(
+        {
+        dayNum:totalWorkingDays,
+        dailyHours:empHrs,
+        dailyWage:calcDailyWage(empHrs),
+        toString() {
+            return "Day=" + this.dayNum + " : Working Hours="+this.dailyHours
+                +" : Wage earned=" +this.dailyWage+"\n"
+        },
+    });
 }
+console.log("Printing All Objects:");
+console.log(empObjArray);
+console.log("---------------------------------------------------");
 
 console.log("Daily Wage Array: "+empDailyWageArray);
 console.log("Daily Wage Map:");
@@ -121,3 +141,60 @@ function totalDaysWorked(noOfDays,dailyWage){
 }
 console.log("Number of Days Emp Worked: "+
     empDailyWageArray.reduce(totalDaysWorked,0));
+console.log("---------------------------------------------------");
+
+//UC 9
+console.log("UC 9");
+
+const findTotal=(TotalVal, dailyVal) => {return TotalVal+dailyVal};
+let count=0;
+let totalHours=Array.from(empDailyHrsMap.values()).reduce(findTotal,0);
+let totalSalary = empDailyWageArray.filter(dailyWage => dailyWage>0)
+    .reduce(findTotal,0);
+console.log("Total Wage Comp Using Arrow Func: "+totalSalary);
+
+let nonWorkingDays = new Array();
+let partWorkingDays = new Array();
+let fullWorkingDays = new Array();
+empDailyHrsMap.forEach((value,key,map)=>{
+    if(value==8) fullWorkingDays.push(key);
+    else if(value==4) partWorkingDays.push(key);
+    else nonWorkingDays.push(key);
+});
+console.log("Full working days: "+fullWorkingDays);
+console.log("Part working days: "+partWorkingDays);
+console.log("Non working days: "+nonWorkingDays);
+console.log("---------------------------------------------------");
+
+//UC 11
+console.log("UC 11");
+
+let totalEmpWages = empObjArray
+                            .filter(obj => obj.dailyWage >0)
+                            .reduce((totalWage,obj)=>
+                                totalWage=totalWage+obj.dailyWage,0);
+
+
+let totalEmpHours = empObjArray
+                            .filter(obj => obj.dailyHours >0)
+                            .reduce((totalHours,obj)=>
+                                totalHours=totalHours+obj.dailyHours,0);
+console.log("Total hours: "+totalEmpHours);
+console.log("Total wage: "+totalEmpWages);
+
+process.stdout.write("Logging Full Work Days:\n");
+empObjArray
+        .filter(obj=>obj.dailyHours == 8)
+        .forEach(obj=>process.stdout.write(obj.toString()));
+
+let partWorkingDayStrArr = empObjArray
+                                    .filter(obj=>obj.dailyHours==4)
+                                    .map(obj=>obj.toString());
+process.stdout.write("Logging Part Working Days:\n");
+console.log(partWorkingDayStrArr);
+
+let nonWorkingDayStrArr = empObjArray
+                                    .filter(obj=>obj.dailyHours==0)
+                                    .map(obj=>obj.dayNum);
+process.stdout.write("Logging Non Working Days:\n");
+console.log(nonWorkingDayStrArr);
