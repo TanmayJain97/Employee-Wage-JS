@@ -28,6 +28,10 @@ let empDailyWageArray = new Array();
 let empDailyWageMap = new Map();
 let empDailyHrsMap = new Map();
 
+//Refactored for UC 10
+let empObjArray = new Array();
+console.log("UC 10");
+
 while((totalEmpHrs<=MAX_HRS_IN_MONTH) && 
         (totalWorkingDays<NUM_OF_WORKING_DAYS)){
     totalWorkingDays++;
@@ -37,7 +41,21 @@ while((totalEmpHrs<=MAX_HRS_IN_MONTH) &&
     empDailyWageArray.push(calcDailyWage(empHrs));
     empDailyWageMap.set(totalWorkingDays,calcDailyWage(empHrs));
     empDailyHrsMap.set(totalWorkingDays,empHrs);
+
+    empObjArray.push(
+        {
+        dayNum : totalWorkingDays,
+        dailyHours:empHrs,
+        dailyWage:calcDailyWage(empHrs),
+        toString() {
+            return "Day=" + this.dayNum + " : Working Hours="+this.dailyHours
+                +" : Wage earned=" +this.dailyWage+"\n"
+        },
+    });
 }
+console.log("Printing All Objects:");
+console.log(empObjArray);
+console.log("---------------------------------------------------");
 
 console.log("Daily Wage Array: "+empDailyWageArray);
 console.log("Daily Wage Map:");
@@ -123,6 +141,7 @@ function totalDaysWorked(noOfDays,dailyWage){
 }
 console.log("Number of Days Emp Worked: "+
     empDailyWageArray.reduce(totalDaysWorked,0));
+console.log("---------------------------------------------------");
 
 //UC 9
 console.log("UC 9");
